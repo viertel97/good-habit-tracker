@@ -17,7 +17,9 @@ logger.add(
 
 
 def get_questions(type_of_page):
-    return json.loads(requests.get("http://" + get_ip() + ":9000/ght/{type}/".format(type=type_of_page)).json())
+    url = "http://" + get_ip() + ":9000/ght/" + type_of_page
+    response = requests.get(url)
+    return response.json()
 
 
 SKIP_LIST = ["h1", "h2", "h3", "paragraph"]
@@ -25,21 +27,21 @@ SKIP_LIST = ["h1", "h2", "h3", "paragraph"]
 
 def send_inputs(inputs, list_of_entries):
     result_dict = {}
-    list_of_entries = [entry for entry in list_of_entries if entry[3] not in SKIP_LIST]
+    list_of_entries = [entry for entry in list_of_entries if entry['default_type'] not in SKIP_LIST]
     for idx, entry in enumerate(list_of_entries):
-        if entry[3] == "boolean":
-            result_dict[entry[0]] = "yes" if inputs[idx] else "no"
-        elif entry[3] == "slider":
+        if entry['default_type'] == "boolean":
+            result_dict[entry['code']] = "yes" if inputs[idx] else "no"
+        elif entry['default_type'] == "slider":
             if inputs[idx]:
-                result_dict[entry[0]] = inputs[idx]
-        elif entry[3] == "textarea":
+                result_dict[entry['code']] = inputs[idx]
+        elif entry['default_type'] == "textarea":
             if inputs[idx] != "" and inputs[idx] is not None:
-                result_dict[entry[0]] = inputs[idx]
+                result_dict[entry['code']] = inputs[idx]
         else:
             if inputs[idx] == "" or inputs[idx] == None:
-                result_dict[entry[0]] = entry[3]
+                result_dict[entry['code']] = entry['default_type']
             else:
-                result_dict[entry[0]] = inputs[idx]
+                result_dict[entry['code']] = inputs[idx]
 
     result_dict["timestamp"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S" + get_current_offset())
     logger.info(result_dict)
