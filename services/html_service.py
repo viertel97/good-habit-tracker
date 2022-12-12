@@ -16,29 +16,29 @@ logger.add(
 def generate_html(response, children):
     temp_list = []
     for entry in response:
-        if entry[3] == "boolean":
+        if entry["default_type"] == "boolean":
             children.append(create_radio_button(entry))
-        elif entry[3] == "slider":
+        elif entry["default_type"] == "slider":
             children.append(create_slider(entry, 5))
-        elif entry[3] == "big_slider":
+        elif entry["default_type"] == "big_slider":
             children.append(create_slider(entry, 10))
-        elif entry[3] == "radio_button":
+        elif entry["default_type"] == "radio_button":
             children.append(create_radio_buttons(entry))
-        elif entry[3] == "checklist":
+        elif entry["default_type"] == "checklist":
             children.append(create_checklist(entry))
-        elif entry[3] == "textarea":
+        elif entry["default_type"] == "textarea":
             children.append(create_textarea(entry))
-        elif entry[3] == "paragraph":
+        elif entry["default_type"] == "paragraph":
             children.append(create_paragraph(entry))
-        elif entry[3] == "h1":
+        elif entry["default_type"] == "h1":
             children.append(create_heading(entry, html.H1))
-        elif entry[3] == "h2":
+        elif entry["default_type"] == "h2":
             children.append(create_heading(entry, html.H2))
-        elif entry[3] == "h3":
+        elif entry["default_type"] == "h3":
             children.append(create_heading(entry, html.H3))
-        elif entry[3] == "h4":
+        elif entry["default_type"] == "h4":
             children.append(create_heading(entry, html.H4))
-        elif entry[3] == "h5":
+        elif entry["default_type"] == "h5":
             children.append(create_heading(entry, html.H5))
         else:
             children.append(create_text_box(entry))
@@ -58,10 +58,13 @@ def create_textarea(entry):
     return html.Div(
         [
             html.Br(),
-            dbc.Label("{label}".format(label=entry[1]), html_for=entry[0]),
+            dbc.Label("{label}".format(label=entry["message"]), html_for=entry["code"]),
             html.Br(),
             dbc.Textarea(
-                className="mb-3", id={"type": "temp", "index": entry[0]}, persistence=True, persistence_type="session"
+                className="mb-3",
+                id={"type": "temp", "index": entry["code"]},
+                persistence=True,
+                persistence_type="session",
             ),
             html.Br(),
         ],
@@ -74,9 +77,9 @@ def create_slider(entry, number_of_values):
     return html.Div(
         [
             html.Br(),
-            get_image(entry[0]),
+            get_image(entry["code"]),
             dbc.RadioItems(
-                id={"type": "temp", "index": entry[0]},
+                id={"type": "temp", "index": entry["code"]},
                 inputClassName="btn-check",
                 labelClassName="btn btn-outline-primary",
                 labelCheckedClassName="active",
@@ -85,7 +88,7 @@ def create_slider(entry, number_of_values):
                 persistence=True,
                 persistence_type="session",
             ),
-            dbc.Label("{label}".format(label=entry[1]), html_for=entry[0]),
+            dbc.Label("{label}".format(label=entry["message"]), html_for=entry["code"]),
             html.Br(),
             html.Br(),
         ],
@@ -98,8 +101,8 @@ def create_radio_buttons(entry):
         [
             html.Br(),
             dcc.RadioItems(
-                id={"type": "temp", "index": entry[0]},
-                options=entry[1].split(" | "),
+                id={"type": "temp", "index": entry["code"]},
+                options=entry["message"].split(" | "),
                 persistence=True,
                 persistence_type="session",
             ),
@@ -110,12 +113,12 @@ def create_radio_buttons(entry):
 
 
 def create_checklist(entry):
-    options = [{"label": x, "value": x} for x in entry[1].split(" | ")]
+    options = [{"label": x, "value": x} for x in entry["message"].split(" | ")]
     return html.Div(
         [
             html.Br(),
             dbc.Checklist(
-                id={"type": "temp", "index": entry[0]},
+                id={"type": "temp", "index": entry["code"]},
                 options=options,
                 persistence=True,
                 persistence_type="session",
@@ -131,9 +134,9 @@ def create_text_box(entry):
     return html.Div(
         [
             html.Br(),
-            dbc.Label("{label}".format(label=entry[1]), html_for=entry[0]),
-            dbc.Input(id={"type": "temp", "index": entry[0]}, type="text", persistence=True),
-            dbc.FormText("Empty: {default}".format(default=entry[3])),
+            dbc.Label("{label}".format(label=entry["message"]), html_for=entry["code"]),
+            dbc.Input(id={"type": "temp", "index": entry["code"]}, type="text", persistence=True),
+            dbc.FormText("Empty: {default}".format(default=entry["default_type"])),
             html.Br(),
         ],
         className="mb-3",
@@ -141,13 +144,13 @@ def create_text_box(entry):
 
 
 def create_radio_button(entry):
-    splitted = entry[2].split(" / ")
+    splitted = entry["notation"].split(" / ")
     return html.Div(
         [
             html.Br(),
-            dbc.Label(entry[1], html_for=entry[0]),
+            dbc.Label(entry["message"], html_for=entry["code"]),
             dbc.RadioItems(
-                id={"type": "temp", "index": entry[0]},
+                id={"type": "temp", "index": entry["code"]},
                 options=[
                     {
                         "label": splitted[0],
@@ -172,7 +175,7 @@ def create_paragraph(entry):
     return html.Div(
         [
             html.Br(),
-            html.P(entry[1]),
+            html.P(entry["message"]),
             html.Br(),
         ]
     )
@@ -182,7 +185,7 @@ def create_heading(entry, heading_type):
     return html.Div(
         [
             html.Br(),
-            heading_type(entry[1]),
+            heading_type(entry["message"]),
             html.Br(),
         ]
     )
