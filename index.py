@@ -1,14 +1,9 @@
-import os
-
 # Import necessary libraries
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
 # Connect to main app.py file
-import components.callbacks
 from app import app
-from helper import get_ip
-
 # Connect to your app pages
 from pages import default  # , monthly, weekly, yearly
 
@@ -40,4 +35,4 @@ def display_page(pathname):
 
 # Run the app on localhost:8050
 if __name__ == "__main__":
-    app.run(host=get_ip(), debug=False, dev_tools_hot_reload=True)
+    app.run(host="0.0.0.0", debug=False, dev_tools_hot_reload=True)

@@ -1,11 +1,9 @@
-import json
 import os
 from datetime import datetime
 
 import requests
 from loguru import logger
 
-from helper import get_ip
 from services.todoist import get_current_offset
 
 logger.add(
@@ -17,7 +15,7 @@ logger.add(
 
 
 def get_questions(type_of_page):
-    url = "http://" + get_ip() + ":9000/ght/" + type_of_page
+    url = "http://localhost:9000/ght/" + type_of_page
     response = requests.get(url)
     return response.json()
 
@@ -29,22 +27,23 @@ def send_inputs(inputs, list_of_entries):
     result_dict = {}
     list_of_entries = [entry for entry in list_of_entries if entry['default_type'] not in SKIP_LIST]
     for idx, entry in enumerate(list_of_entries):
+        selected_value = inputs[idx]
         if entry['default_type'] == "boolean":
-            result_dict[entry['code']] = "yes" if inputs[idx] else "no"
+            result_dict[entry['code']] = "yes" if selected_value else "no"
         elif entry['default_type'] == "slider":
-            if inputs[idx]:
-                result_dict[entry['code']] = inputs[idx]
+            if selected_value:
+                result_dict[entry['code']] = selected_value
         elif entry['default_type'] == "textarea":
-            if inputs[idx] != "" and inputs[idx] is not None:
-                result_dict[entry['code']] = inputs[idx]
+            if selected_value != "" and selected_value is not None:
+                result_dict[entry['code']] = selected_value
         else:
-            if inputs[idx] == "" or inputs[idx] == None:
+            if selected_value == "" or selected_value == None:
                 result_dict[entry['code']] = entry['default_type']
             else:
-                result_dict[entry['code']] = inputs[idx]
+                result_dict[entry['code']] = selected_value
 
     result_dict["timestamp"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S" + get_current_offset())
     logger.info(result_dict)
-    re = requests.post("http://" + get_ip() + ":9000/ght/", json=result_dict)
+    re = requests.post("http://localhost:9000/ght/", json=result_dict)
     logger.info(re.content)
     return "{code} - {reason} - Thanks!".format(code=re.status_code, reason=re.reason)

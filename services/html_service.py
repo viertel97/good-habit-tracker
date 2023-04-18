@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 import dash_bootstrap_components as dbc
 from dash import dcc, html
@@ -11,6 +10,8 @@ logger.add(
     backtrace=True,
     diagnose=True,
 )
+
+PERSISTENCE = False
 
 
 def generate_html(response, children):
@@ -63,7 +64,7 @@ def create_textarea(entry):
             dbc.Textarea(
                 className="mb-3",
                 id={"type": "temp", "index": entry["code"]},
-                persistence=True,
+                persistence=PERSISTENCE,
                 persistence_type="session",
             ),
             html.Br(),
@@ -85,7 +86,7 @@ def create_slider(entry, number_of_values):
                 labelCheckedClassName="active",
                 options=options,
                 inline=True,
-                persistence=True,
+                persistence=PERSISTENCE,
                 persistence_type="session",
             ),
             dbc.Label("{label}".format(label=entry["message"]), html_for=entry["code"]),
@@ -103,7 +104,7 @@ def create_radio_buttons(entry):
             dcc.RadioItems(
                 id={"type": "temp", "index": entry["code"]},
                 options=entry["message"].split(" | "),
-                persistence=True,
+                persistence=PERSISTENCE,
                 persistence_type="session",
             ),
             html.Br(),
@@ -120,7 +121,7 @@ def create_checklist(entry):
             dbc.Checklist(
                 id={"type": "temp", "index": entry["code"]},
                 options=options,
-                persistence=True,
+                persistence=PERSISTENCE,
                 persistence_type="session",
                 inline=False,
                 style={"display": "grid"},
@@ -135,9 +136,11 @@ def create_text_box(entry):
         [
             html.Br(),
             dbc.Label("{label}".format(label=entry["message"]), html_for=entry["code"]),
-            dbc.Input(id={"type": "temp", "index": entry["code"]}, type="text", persistence=True),
+            dbc.Textarea(id={"type": "dynamic-input", "index": entry["code"]}, persistence=PERSISTENCE),
             dbc.FormText("Empty: {default}".format(default=entry["default_type"])),
+            html.Div(id={"type": "dynamic-output", "index": entry["code"]}, style={'whiteSpace': 'pre-line'}),
             html.Br(),
+
         ],
         className="mb-3",
     )

@@ -1,10 +1,11 @@
 import os
-from pathlib import Path
 
-from app import app
-from dash import ALL, Input, Output, State
+from dash import ALL, Input, Output, State, MATCH
+from dash import dcc
 from dash.exceptions import PreventUpdate
 from loguru import logger
+
+from app import app
 from services.html_service import generate_html, get_auto_close_callback
 from services.proxy_service import get_questions, send_inputs
 
@@ -30,27 +31,44 @@ def display_form(n_clicks, path, children):
         return None, None
 
 
+special_characters = "!@#$%^&*()-+?_=,<>/~"
+
+
+@app.callback(
+    Output({'type': 'dynamic-output', 'index': MATCH}, 'children'),
+    Input({'type': 'dynamic-input', 'index': MATCH}, 'value'),
+)
+def update_output(value):
+    if value is not None:
+        if any(c in special_characters for c in value):
+            print(value)
+            return dcc.Markdown(value)
+    return PreventUpdate
+
+
 @app.callback(
     Output("output", "children"),
     Input("submit-form", "n_clicks"),
     State({"type": "temp", "index": ALL}, "value"),
+    State({"type": "dynamic-input", "index": ALL}, "value"),
     State("memory", "data"),
 )
-def display_output(n_clicks, inputs, list_of_entries):
+def display_output(n_clicks, inputs, dynamic_inputs, list_of_entries):
     if n_clicks > 0:
-        return send_inputs(inputs, list_of_entries)
+        combined_inputs = inputs + dynamic_inputs
+        return send_inputs(combined_inputs, list_of_entries)
     else:
-        PreventUpdate
+        return PreventUpdate
 
 
 def generate_outputs(inputs):
     outputs = []
-    for input in inputs:
-        if input == "yes" or input == "no":
+    for input_element in inputs:
+        if input_element == "yes" or input_element == "no":
             outputs.append("")
-        elif input == True:
+        elif input_element:
             outputs.append(False)
-        elif type(input) == int:
+        elif type(input_element) == int:
             outputs.append(None)
         else:
             outputs.append(None)
