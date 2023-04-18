@@ -2,14 +2,9 @@ import os
 
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-from loguru import logger
+from quarter_lib.logging import setup_logging
 
-logger.add(
-    os.path.join(os.path.dirname(os.path.abspath(__file__)) + "/logs/" + os.path.basename(__file__) + ".log"),
-    format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
-    backtrace=True,
-    diagnose=True,
-)
+logger = setup_logging(__file__)
 
 PERSISTENCE = False
 

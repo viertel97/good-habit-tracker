@@ -1,17 +1,11 @@
-import os
 from datetime import datetime
 
 import requests
-from loguru import logger
+from quarter_lib.logging import setup_logging
 
 from services.todoist import get_current_offset
 
-logger.add(
-    os.path.join(os.path.dirname(os.path.abspath(__file__)) + "/logs/" + os.path.basename(__file__) + ".log"),
-    format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
-    backtrace=True,
-    diagnose=True,
-)
+logger = setup_logging(__file__)
 
 
 def get_questions(type_of_page):
