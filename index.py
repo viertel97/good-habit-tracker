@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output
 from app import app
 # Connect to your app pages
 from pages import default  # , monthly, weekly, yearly
+import components.callbacks as callbacks
 
 # Define the index page layout
 app.layout = html.Div(
@@ -35,4 +36,4 @@ def display_page(pathname):
 
 # Run the app on localhost:8050
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=False, dev_tools_hot_reload=True)
+    app.run(host="0.0.0.0", port=8050, debug=False, dev_tools_hot_reload=True)
