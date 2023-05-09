@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: good-habit-tracker
+  name: good-habit-tracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: good-habit-tracker
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/kubernetes-default: "true"
+        io.kompose.service: good-habit-tracker
+    spec:
+      containers:
+        - env:
+            - name: access_id
+              valueFrom:
+                configMapKeyRef:
+                  key: access_id
+                  name: cred-env
+            - name: access_key
+              valueFrom:
+                configMapKeyRef:
+                  key: access_key
+                  name: cred-env
+          image: ghcr.io/viertel97/good-habit-tracker:main
+          name: good-habit-tracker
+          ports:
+            - containerPort: 8050
+          resources: {}
+      restartPolicy: Always
+status: {}
