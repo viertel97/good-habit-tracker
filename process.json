@@ -1,10 +1,10 @@
 {
     "apps": [
         {
-            "name": "GHT",
+            "name": "good-habit-tracker",
             "script": "index.py",
-            "cwd": "/home/pi/code/GHT",
-            "interpreter": "/home/pi/code/GHT/venv/bin/python",
+            "cwd": "/home/pi/code/good-habit-tracker",
+            "interpreter": "/home/pi/code/good-habit-tracker/venv/bin/python",
             "instances": 1,
             "exec_mode": "fork",
             "log_date_format": "YYYY-MM-DD HH:mm Z",
