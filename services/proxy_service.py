@@ -1,15 +1,22 @@
+import os
 from datetime import datetime
 
 import requests
-from quarter_lib.logging import setup_logging
+from loguru import logger
 
+from helper import get_ip
 from services.todoist import get_current_offset
 
-logger = setup_logging(__file__)
+logger.add(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)) + "/logs/" + os.path.basename(__file__) + ".log"),
+    format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
+    backtrace=True,
+    diagnose=True,
+)
 
 
 def get_questions(type_of_page):
-    url = "http://localhost:9000/ght/" + type_of_page
+    url = "http://" + get_ip() + ":9000/ght/" + type_of_page
     response = requests.get(url)
     return response.json()
 
@@ -38,6 +45,6 @@ def send_inputs(inputs, list_of_entries):
 
     result_dict["timestamp"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S" + get_current_offset())
     logger.info(result_dict)
-    re = requests.post("http://localhost:9000/ght/", json=result_dict)
+    re = requests.post("http://" + get_ip() + ":9000/ght/", json=result_dict)
     logger.info(re.content)
     return "{code} - {reason} - Thanks!".format(code=re.status_code, reason=re.reason)

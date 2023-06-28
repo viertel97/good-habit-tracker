@@ -1,13 +1,20 @@
+import os
+
 from dash import ALL, Input, Output, State, MATCH
 from dash import dcc
 from dash.exceptions import PreventUpdate
-from quarter_lib.logging import setup_logging
+from loguru import logger
 
 from app import app
 from services.html_service import generate_html, get_auto_close_callback
 from services.proxy_service import get_questions, send_inputs
 
-logger = setup_logging(__file__)
+logger.add(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)) + "/logs/" + os.path.basename(__file__) + ".log"),
+    format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
+    backtrace=True,
+    diagnose=True,
+)
 
 
 @app.callback(
