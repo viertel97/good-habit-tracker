@@ -208,7 +208,7 @@ def generate_layout_html():
     )
 
 
-def get_auto_close_callback():
+def get_auto_close_callback_old():
     return """
    function placeholder(n_clicks) {
        if(n_clicks > 0) {
@@ -223,4 +223,18 @@ def get_auto_close_callback():
 
    }
 
+   """
+
+def get_auto_close_callback():
+    return """
+   function placeholder(response) {
+       if(response) {
+           console.log(response);
+           setTimeout(function(){
+               window.close();
+           }, 5000);
+           return null;
+       }
+       return null;
+   }
    """
