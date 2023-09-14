@@ -1,6 +1,6 @@
 import os
 
-from dash import ALL, Input, Output, State, MATCH
+from dash import ALL, Input, Output, State, MATCH, ClientsideFunction
 from dash import dcc
 from dash.exceptions import PreventUpdate
 from loguru import logger
@@ -76,11 +76,11 @@ def generate_outputs(inputs):
 
 
 app.clientside_callback(
-    get_auto_close_callback(),
+    ClientsideFunction(namespace="my_clientside_library", function_name="close_window"),
     [
         Output("output-js", "data"),
     ],
     [
-        Input("submit-form", "n_clicks"),
+        Input("output", "children"),
     ],
 )

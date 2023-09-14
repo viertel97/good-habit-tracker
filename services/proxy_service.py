@@ -21,8 +21,8 @@ def get_questions(type_of_page):
     return response.json()
 
 
-SKIP_LIST = ["h1", "h2", "h3", "paragraph"]
 
+SKIP_LIST = ["h1", "h2", "h3", "paragraph"]
 
 def send_inputs(inputs, list_of_entries):
     result_dict = {}
