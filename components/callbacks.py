@@ -1,12 +1,12 @@
 import os
 
-from dash import ALL, Input, Output, State, MATCH, ClientsideFunction
+from dash import ALL, Input, Output, State, MATCH
 from dash import dcc
 from dash.exceptions import PreventUpdate
 from loguru import logger
 
 from app import app
-from services.html_service import generate_html, get_auto_close_callback
+from services.html_service import generate_html, get_auto_close_callback_old
 from services.proxy_service import get_questions, send_inputs
 
 logger.add(
@@ -76,11 +76,11 @@ def generate_outputs(inputs):
 
 
 app.clientside_callback(
-    ClientsideFunction(namespace="my_clientside_library", function_name="close_window"),
+    get_auto_close_callback_old(),
     [
         Output("output-js", "data"),
     ],
     [
-        Input("output", "children"),
+        Input("submit-form", "n_clicks"),
     ],
 )
