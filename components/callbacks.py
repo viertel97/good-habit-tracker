@@ -6,7 +6,7 @@ from dash.exceptions import PreventUpdate
 from loguru import logger
 
 from app import app
-from services.html_service import generate_html, get_auto_close_callback
+from services.html_service import generate_html, get_auto_close_callback_old
 from services.proxy_service import get_questions, send_inputs
 
 logger.add(
@@ -76,7 +76,7 @@ def generate_outputs(inputs):
 
 
 app.clientside_callback(
-    get_auto_close_callback(),
+    get_auto_close_callback_old(),
     [
         Output("output-js", "data"),
     ],

@@ -227,14 +227,11 @@ def get_auto_close_callback_old():
 
 def get_auto_close_callback():
     return """
-   function placeholder(response) {
-       if(response) {
-           console.log(response);
-           setTimeout(function(){
-               window.close();
-           }, 5000);
-           return null;
-       }
-       return null;
+   function close_window() {
+       console.log("close window: " + response);
+       setTimeout(function(){
+           window.close();
+       }, 5000);
+       return "worked";
    }
    """
