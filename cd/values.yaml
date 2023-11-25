@@ -44,7 +44,6 @@ service:
 
 ingress:
   enabled: true
-  className: nginx
   annotations:
     kubernetes.io/ingress.sclass: nginx
     nginx.ingress.kubernetes.io/auth-type: basic
