@@ -14,9 +14,15 @@ logger.add(
     diagnose=True,
 )
 
+IS_CONTAINER = os.environ.get("IS_CONTAINER", "False") == "True"
+
+if IS_CONTAINER:
+    IP = "tasker-proxy.default.svc.cluster.local"
+else:
+    IP = "localhost:9000"
 
 def get_questions(type_of_page):
-    url = "http://" + get_ip() + ":9000/ght/" + type_of_page
+    url = "http://" + IP + "/ght/" + type_of_page
     response = requests.get(url)
     return response.json()
 
