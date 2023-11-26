@@ -1,15 +1,11 @@
 import os
-
+from quarter_lib.akeyless import get_secrets
 import requests
-from loguru import logger
+from quarter_lib.logging import setup_logging
+TODOIST_TOKEN = get_secrets(["todoist/token"])
 
-logger.add(
-    os.path.join(os.path.dirname(os.path.abspath(__file__)) + "/logs/" + os.path.basename(__file__) + ".log"),
-    format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
-    backtrace=True,
-    diagnose=True,
-)
-headers = {"Authorization": f"Bearer {os.environ['TODOIST_TOKEN']}"}
+logger = setup_logging(__file__)
+headers = {"Authorization": f"Bearer {TODOIST_TOKEN}"}
 
 
 def get_current_offset():
