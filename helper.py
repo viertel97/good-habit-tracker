@@ -1,13 +1,19 @@
 import os
+from quarter_lib.logging import setup_logging
+
+logger = setup_logging(__file__)
 
 IS_CONTAINER = os.environ.get("IS_CONTAINER", "False") == "True"
 
+if IS_CONTAINER:
+    IP = "tasker-proxy.default.svc.cluster.local"
+else:
+    IP = "localhost:9000"
+logger.info("IP: " + IP)
+
 
 def get_ip():
-    if IS_CONTAINER:
-        return "tasker-proxy.default.svc.cluster.local"
-    else:
-        return "localhost:9000"  # if not os.name == "nt" else "localhost"
+    return IP
 
 
 def get_debug():

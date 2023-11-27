@@ -14,21 +14,17 @@ logger.add(
     diagnose=True,
 )
 
-IS_CONTAINER = os.environ.get("IS_CONTAINER", "False") == "True"
 
-if IS_CONTAINER:
-    IP = "tasker-proxy.default.svc.cluster.local"
-else:
-    IP = "localhost:9000"
 
 def get_questions(type_of_page):
-    url = "http://" + IP + "/ght/" + type_of_page
+    url = "http://" + get_ip() + "/ght/" + type_of_page
+    logger.info("Getting questions from: " + url)
     response = requests.get(url)
     return response.json()
 
 
-
 SKIP_LIST = ["h1", "h2", "h3", "paragraph"]
+
 
 def send_inputs(inputs, list_of_entries):
     result_dict = {}

@@ -7,7 +7,6 @@ from dash.dependencies import Input, Output
 # Connect to main app.py file
 import components.callbacks
 from app import app
-from helper import get_ip
 
 # Connect to your app pages
 from pages import default  # , monthly, weekly, yearly
