@@ -8,12 +8,12 @@ IS_CONTAINER = os.environ.get("IS_CONTAINER", "False") == "True"
 if IS_CONTAINER:
     IP = "tasker-proxy.default.svc.cluster.local"
 else:
-    IP = "localhost:9000"
+    IP = "localhost"
 logger.info("IP: " + IP)
 
 
 def get_ip():
-    return IP
+    return IP + ":9000"
 
 
 def get_debug():
