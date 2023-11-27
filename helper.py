@@ -1,9 +1,13 @@
 import os
 
+IS_CONTAINER = os.environ.get("IS_CONTAINER", "False") == "True"
+
 
 def get_ip():
-    # return "localhost" if get_debug() else "0.0.0.0"
-    return "localhost" # if not os.name == "nt" else "localhost"
+    if IS_CONTAINER:
+        return "tasker-proxy.default.svc.cluster.local"
+    else:
+        return "localhost:9000"  # if not os.name == "nt" else "localhost"
 
 
 def get_debug():

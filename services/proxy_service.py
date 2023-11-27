@@ -51,6 +51,6 @@ def send_inputs(inputs, list_of_entries):
 
     result_dict["timestamp"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S" + get_current_offset())
     logger.info(result_dict)
-    re = requests.post("http://" + get_ip() + ":9000/ght/", json=result_dict)
+    re = requests.post("http://" + get_ip() + "/ght/", json=result_dict)
     logger.info(re.content)
     return "{code} - {reason} - Thanks!".format(code=re.status_code, reason=re.reason)
