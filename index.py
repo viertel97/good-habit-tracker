@@ -34,7 +34,19 @@ def display_page(pathname):
     if pathname == "/yearly":
         return default.generate_layout()
     else:  # if redirected to unknown link
-        return "404 Page Error! Please choose a link"
+        return html.Div(
+            [
+                dcc.Link("Daily", href="/daily"),
+                html.Br(),
+                dcc.Link("Weekly", href="/weekly"),
+                html.Br(),
+                dcc.Link("Monthly", href="/monthly"),
+                html.Br(),
+                dcc.Link("Quarterly", href="/quarterly"),
+                html.Br(),
+                dcc.Link("Yearly", href="/yearly"),
+            ]
+        )
 
 
 # Run the app on localhost:8050
