@@ -55,9 +55,9 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-  - hosts:
-    - good-habit-tracker.viertel-it.de
-    secretName: good-habit-tracker-tls
+    - secretName: tls.good-habit-tracker
+      hosts:
+        - good-habit-tracker.viertel-it.de
 
 
 resources: {}
