@@ -47,7 +47,7 @@ ingress:
   annotations:
     kubernetes.io/ingress.sclass: nginx
     nginx.ingress.kubernetes.io/auth-url: "https://auth.viertel-it.de/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://auth.viertel-it.de/oauth2/start?rd=https%3A%2F%2Fgood-habit-tracker.viertel-it.de%2F"
+    nginx.ingress.kubernetes.io/auth-signin: "https://auth.viertel-it.de/oauth2/start?rd=https://$host$escaped_request_uri"
     cert-manager.io/cluster-issuer: letsencrypt
   hosts:
     - host: good-habit-tracker.viertel-it.de
