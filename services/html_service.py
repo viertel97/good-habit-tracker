@@ -1,15 +1,9 @@
 import os
-
+from quarter_lib.logging import setup_logging
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-from loguru import logger
 
-logger.add(
-    os.path.join(os.path.dirname(os.path.abspath(__file__)) + "/logs/" + os.path.basename(__file__) + ".log"),
-    format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
-    backtrace=True,
-    diagnose=True,
-)
+logger = setup_logging(__file__)
 
 PERSISTENCE = False
 
@@ -50,7 +44,9 @@ def generate_html(response, children):
 def get_image(code):
     path = f"assets/{code}.svg"
     if os.path.exists(path):
-        return html.Img(src=path, className="img-fluid", style={"height": "30px", "width": "30px"})
+        return html.Img(
+            src=path, className="img-fluid", style={"height": "30px", "width": "30px"}
+        )
     else:
         return None
 
@@ -136,11 +132,16 @@ def create_text_box(entry):
         [
             html.Br(),
             dbc.Label("{label}".format(label=entry["message"]), html_for=entry["code"]),
-            dbc.Textarea(id={"type": "dynamic-input", "index": entry["code"]}, persistence=PERSISTENCE),
+            dbc.Textarea(
+                id={"type": "dynamic-input", "index": entry["code"]},
+                persistence=PERSISTENCE,
+            ),
             dbc.FormText("Empty: {default}".format(default=entry["default_type"])),
-            html.Div(id={"type": "dynamic-output", "index": entry["code"]}, style={'whiteSpace': 'pre-line'}),
+            html.Div(
+                id={"type": "dynamic-output", "index": entry["code"]},
+                style={"whiteSpace": "pre-line"},
+            ),
             html.Br(),
-
         ],
         className="mb-3",
     )
@@ -158,12 +159,16 @@ def create_radio_button(entry):
                     {
                         "label": splitted[0],
                         "value": True,
-                        "label_id": "label-positive" if "positive" in splitted[0] else "label-negative",
+                        "label_id": "label-positive"
+                        if "positive" in splitted[0]
+                        else "label-negative",
                     },
                     {
                         "label": splitted[1],
                         "value": False,
-                        "label_id": "label-positive" if "positive" in splitted[1] else "label-negative",
+                        "label_id": "label-positive"
+                        if "positive" in splitted[1]
+                        else "label-negative",
                     },
                 ],
                 value=False,
@@ -215,7 +220,7 @@ def get_auto_close_callback_old():
            console.log(n_clicks);
            setTimeout(function(){
                window.close();
-           }, 4000);
+           }, 8000);
            return null;
 
        }
@@ -225,13 +230,14 @@ def get_auto_close_callback_old():
 
    """
 
+
 def get_auto_close_callback():
     return """
    function close_window() {
        console.log("close window: " + response);
        setTimeout(function(){
            window.close();
-       }, 5000);
+       }, 8000);
        return "worked";
    }
    """

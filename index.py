@@ -1,11 +1,8 @@
-import os
-
 # Import necessary libraries
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
 # Connect to main app.py file
-import components.callbacks
 from app import app
 
 # Connect to your app pages

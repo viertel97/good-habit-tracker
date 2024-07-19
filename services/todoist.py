@@ -1,4 +1,3 @@
-import os
 from quarter_lib.akeyless import get_secrets
 import requests
 from quarter_lib.logging import setup_logging
