@@ -1,5 +1,4 @@
-from dash import ALL, Input, Output, State, MATCH
-from dash import dcc
+from dash import ALL, MATCH, Input, Output, State, dcc
 from dash.exceptions import PreventUpdate
 from quarter_lib.logging import setup_logging
 
@@ -11,15 +10,13 @@ logger = setup_logging(__file__)
 
 
 @app.callback(
-    [Output("container", "children"),
-     Output("memory", "data")],
-    [Input("submit-form", "n_clicks"),
-     Input("url", "pathname")],
+    [Output("container", "children"), Output("memory", "data")],
+    [Input("submit-form", "n_clicks"), Input("url", "pathname")],
     State("container", "children"),
 )
 def display_form(n_clicks, path, children):
     if not n_clicks > 0:
-        questions = get_questions(path)
+        questions = get_questions(path[1:])
         temp_list = generate_html(questions, children)
         return children, temp_list
     else:

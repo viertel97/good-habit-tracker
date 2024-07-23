@@ -1,4 +1,5 @@
 import os
+
 from quarter_lib.logging import setup_logging
 
 logger = setup_logging(__file__)
@@ -10,7 +11,7 @@ if IS_CONTAINER:
 else:
     IP = "localhost"
 logger.info("IP: " + IP)
-print("IP: " + IP)
+
 
 def get_ip():
     return IP + ":9000"

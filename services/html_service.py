@@ -1,7 +1,8 @@
 import os
-from quarter_lib.logging import setup_logging
+
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+from quarter_lib.logging import setup_logging
 
 logger = setup_logging(__file__)
 

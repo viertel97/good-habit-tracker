@@ -1,14 +1,11 @@
-# Import necessary libraries
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
-# Connect to main app.py file
 from app import app
+from components import callbacks  # noqa: F401
 
-# Connect to your app pages
-from pages import default  # , monthly, weekly, yearly
+from pages import default
 
-# Define the index page layout
 app.layout = html.Div(
     [
         dcc.Location(id="url", refresh=False),
@@ -20,9 +17,9 @@ app.layout = html.Div(
 # Create the callback to handle mutlipage inputs
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
-    if pathname == "/daily-morning":
+    if pathname == "/daily/morning":
         return default.generate_layout()
-    if pathname == "/daily-evening":
+    if pathname == "/daily/evening":
         return default.generate_layout()
     if pathname == "/weekly":
         return default.generate_layout()
@@ -35,9 +32,9 @@ def display_page(pathname):
     else:  # if redirected to unknown link
         return html.Div(
             [
-                dcc.Link("Daily - Morning", href="/daily-morning"),
+                dcc.Link("Daily - Morning", href="/daily/morning"),
                 html.Br(),
-                dcc.Link("Daily - Evening", href="/daily-evening"),
+                dcc.Link("Daily - Evening", href="/daily/evening"),
                 html.Br(),
                 html.Br(),
                 dcc.Link("Weekly", href="/weekly"),
