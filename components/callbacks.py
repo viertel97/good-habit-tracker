@@ -11,13 +11,15 @@ logger = setup_logging(__file__)
 
 
 @app.callback(
-    [Output("container", "children"), Output("memory", "data")],
-    [Input("submit-form", "n_clicks"), Input("url", "pathname")],
+    [Output("container", "children"),
+     Output("memory", "data")],
+    [Input("submit-form", "n_clicks"),
+     Input("url", "pathname")],
     State("container", "children"),
 )
 def display_form(n_clicks, path, children):
     if not n_clicks > 0:
-        questions = get_questions(path[1:])
+        questions = get_questions(path)
         temp_list = generate_html(questions, children)
         return children, temp_list
     else:
