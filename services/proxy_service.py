@@ -20,7 +20,7 @@ def get_questions(type_of_page):
 SKIP_LIST = ["h1", "h2", "h3", "paragraph"]
 
 
-def send_inputs(inputs, list_of_entries, pathname):
+def send_inputs(inputs, list_of_entries):
     result_dict = {}
     list_of_entries = [
         entry for entry in list_of_entries if entry["default_type"] not in SKIP_LIST
@@ -43,7 +43,7 @@ def send_inputs(inputs, list_of_entries, pathname):
     result_dict["timestamp"] = datetime.now().strftime(
         "%Y-%m-%dT%H:%M:%S" + get_current_offset()
     )
-    result_dict["type"] = pathname
+    # result_dict["type"] = pathname
     logger.info(result_dict)
     re = requests.post("http://" + get_ip() + "/ght/", json=result_dict)
     logger.info(re.content)

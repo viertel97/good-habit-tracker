@@ -10,7 +10,7 @@ if IS_CONTAINER:
 else:
     IP = "localhost"
 logger.info("IP: " + IP)
-
+print("IP: " + IP)
 
 def get_ip():
     return IP + ":9000"

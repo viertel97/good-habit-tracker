@@ -44,15 +44,14 @@ def update_output(value):
 @app.callback(
     Output("output", "children"),
     Input("submit-form", "n_clicks"),
-    Input("url", "pathname"),
     State({"type": "temp", "index": ALL}, "value"),
     State({"type": "dynamic-input", "index": ALL}, "value"),
     State("memory", "data"),
 )
-def display_output(n_clicks, pathname, inputs, dynamic_inputs, list_of_entries):
+def display_output(n_clicks, inputs, dynamic_inputs, list_of_entries):
     if n_clicks > 0:
         combined_inputs = inputs + dynamic_inputs
-        return send_inputs(combined_inputs, list_of_entries, pathname[1:])
+        return send_inputs(combined_inputs, list_of_entries)
     else:
         return PreventUpdate
 
