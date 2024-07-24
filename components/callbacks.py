@@ -11,7 +11,8 @@ logger = setup_logging(__file__)
 
 @app.callback(
     [Output("container", "children"), Output("memory", "data")],
-    [Input("submit-form", "n_clicks"), Input("url", "pathname")],
+    [Input("submit-form", "n_clicks"),
+     Input("url", "pathname")],
     State("container", "children"),
 )
 def display_form(n_clicks, path, children):
@@ -40,15 +41,16 @@ def update_output(value):
 
 @app.callback(
     Output("output", "children"),
-    Input("submit-form", "n_clicks"),
-    State({"type": "temp", "index": ALL}, "value"),
+    [Input("submit-form", "n_clicks"),
+    Input("url", "pathname")],
+State({"type": "temp", "index": ALL}, "value"),
     State({"type": "dynamic-input", "index": ALL}, "value"),
     State("memory", "data"),
 )
-def display_output(n_clicks, inputs, dynamic_inputs, list_of_entries):
+def display_output(n_clicks, pathname, inputs, dynamic_inputs, list_of_entries):
     if n_clicks > 0:
         combined_inputs = inputs + dynamic_inputs
-        return send_inputs(combined_inputs, list_of_entries)
+        return send_inputs(combined_inputs, list_of_entries, pathname[1:])
     else:
         return PreventUpdate
 
