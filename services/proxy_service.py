@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 from quarter_lib.logging import setup_logging
 
-from helper import get_ip
+from helper.network_helper import get_ip
 from services.todoist import get_current_offset
 
 logger = setup_logging(__file__)

@@ -3,7 +3,6 @@ from dash.dependencies import Input, Output
 
 from app import app
 from components import callbacks  # noqa: F401
-
 from pages import default
 
 app.layout = html.Div(
