@@ -45,10 +45,9 @@ service:
 ingress:
   enabled: true
   annotations:
-    kubernetes.io/ingress.sclass: nginx
-    nginx.ingress.kubernetes.io/auth-url: "https://auth.viertel-it.de/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://auth.viertel-it.de/oauth2/start?rd=https://$host$escaped_request_uri"
+    kubernetes.io/ingress.class: traefik
     cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: infrastructure-oauth2-chain@kubernetescrd
   hosts:
     - host: good-habit-tracker.viertel-it.de
       paths:
